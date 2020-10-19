@@ -5,13 +5,13 @@
 #include "my_headers.h"
 
 /**
- * ³õÊ¼»¯Êı×é
+ * åˆå§‹åŒ–æ•°ç»„
  */
 Status InitArray(Array &A, int dim, ...)
 {
 	va_list ap;
 	int i;
-	int elemtotal = 1;	//±£´æÊı×éµÄÔªËØ¸öÊı
+	int elemtotal = 1;	//ä¿å­˜æ•°ç»„çš„å…ƒç´ ä¸ªæ•°
 	if (dim < 1 || dim > MAX_ARRAY_DIM)
 		return ERROR;
 	A.dim = dim;
@@ -20,21 +20,21 @@ Status InitArray(Array &A, int dim, ...)
 		return ERROR;
 	va_start(ap, dim);
 	for (i=0; i<dim; i++) {
-		A.bounds[i] = va_arg(ap, int);	//¶ÁÈëÒ»¸ö±ä³¤²ÎÊı
+		A.bounds[i] = va_arg(ap, int);	//è¯»å…¥ä¸€ä¸ªå˜é•¿å‚æ•°
 		if (A.bounds[i] < 0)
 			return ERROR;
-		elemtotal *= A.bounds[0];
+		elemtotal *= A.bounds[i];
 	}
 
 	va_end(ap);
 	A.base = (ElemType *)malloc(elemtotal*sizeof(ElemType));
 	if (!A.base)
 		return ERROR;
-	//ÏÂÃæÇóÓ³Ïñº¯Êıci,²¢´æÈëA.constants[i-1], i=1,...,dim
+	//ä¸‹é¢æ±‚æ˜ åƒå‡½æ•°ci,å¹¶å­˜å…¥A.constants[i-1], i=1,...,dim
 	A.constants = (int *)malloc(dim*sizeof(int));
 	if (!A.constants)
 		return ERROR;
-	A.constants[dim-1] = 1;	//L=1£¬Ö¸ÕëµÄÔö¼õÒÔÔªËØµÄ´óĞ¡Îªµ¥Î»
+	A.constants[dim-1] = 1;	//L=1ï¼ŒæŒ‡é’ˆçš„å¢å‡ä»¥å…ƒç´ çš„å¤§å°ä¸ºå•ä½
 	for (i=dim-2; i>=0; i--)
 		A.constants[i] = A.bounds[i+1] * A.constants[i+1];
 
@@ -42,7 +42,7 @@ Status InitArray(Array &A, int dim, ...)
 }
 
 /**
- * Ïú»ÙÊı×éA
+ * é”€æ¯æ•°ç»„A
  */
 Status DestroyArray(Array &A)
 {
@@ -63,7 +63,7 @@ Status DestroyArray(Array &A)
 }
 
 /**
- * ÈôapÖ¸Ê¾µÄ¸÷ÏÂ±êÖµºÏ·¨£¬ÔòÇó³ö¸ÃÔªËØÔÚAÖĞµÄÏà¶ÔµØÖ·off
+ * è‹¥apæŒ‡ç¤ºçš„å„ä¸‹æ ‡å€¼åˆæ³•ï¼Œåˆ™æ±‚å‡ºè¯¥å…ƒç´ åœ¨Aä¸­çš„ç›¸å¯¹åœ°å€off
  */
 Status Locate(Array A, va_list ap, int &off)
 {
@@ -80,7 +80,7 @@ Status Locate(Array A, va_list ap, int &off)
 }
 
 /**
- * AÊÇnÎ¬Êı×é£¬eÎªÔªËØ±äÁ¿£¬ËæºóÊÇn¸öÏÂ±êÖµ£¬ÈôÏÂ±ê²»Ô½½ç£¬Ã»e¸³ÖµÎªËùÖ¸¶¨µÄAµÄÔªËØÖµ£¬²¢·µ»ØOK
+ * Aæ˜¯nç»´æ•°ç»„ï¼Œeä¸ºå…ƒç´ å˜é‡ï¼Œéšåæ˜¯nä¸ªä¸‹æ ‡å€¼ï¼Œè‹¥ä¸‹æ ‡ä¸è¶Šç•Œï¼Œæ²¡eèµ‹å€¼ä¸ºæ‰€æŒ‡å®šçš„Açš„å…ƒç´ å€¼ï¼Œå¹¶è¿”å›OK
  */
 Status Value(Array A, ElemType &e, ...)
 {
@@ -96,7 +96,7 @@ Status Value(Array A, ElemType &e, ...)
 }
 
 /**
- * ½«eÖµ¸³¸øËùÖ¸¶¨µÄAµÄÔªËØ£¬²¢·µ»ØOK
+ * å°†eå€¼èµ‹ç»™æ‰€æŒ‡å®šçš„Açš„å…ƒç´ ï¼Œå¹¶è¿”å›OK
  */
 Status Assign(Array &A, ElemType e, ...)
 {
